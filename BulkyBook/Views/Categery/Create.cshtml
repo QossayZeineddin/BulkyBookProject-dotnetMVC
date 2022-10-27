@@ -1,0 +1,60 @@
+﻿@model BulkyBook.Models.Categery
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<h1>Create New Categery </h1>
+<hr>
+
+<div class="col-md-4">
+    <form asp-action="Create" method="post">
+        @* <div asp-validation-summary="All" class="text-danger"></div> *@
+        <div class="form-group">
+            <label asp-for="name" class="control-label"></label>
+            <input asp-for="name" class="form-control"/>
+            <span asp-validation-for="name" class="text-danger"></span>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="displyOrder" class="control-label"></label>
+            <input asp-for="displyOrder" class="form-control"/>
+            <span asp-validation-for="displyOrder" class="text-danger"></span>
+
+        </div>
+        @* <div class="form-group"> *@
+        @*     <label asp-for="createdDateTime" class="control-label"></label> *@
+        @*     <input asp-for="createdDateTime" class="form-control"/> *@
+        @*     <span asp-validation-for="createdDateTime" class="text-danger"></span> *@
+        @* *@
+        @* </div> *@
+
+        <div class="form-group">
+            <hr>
+            <span>
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                <input type="submit" value="Create " class="btn btn-primary"/>
+            </span>
+
+        </div>
+    </form>
+
+</div>
+<br>
+<br>
+
+
+</body>
+</html>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
