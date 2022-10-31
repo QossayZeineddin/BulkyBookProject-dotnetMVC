@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.Migrations
 {
     [DbContext(typeof(ApplecationDbContext))]
-    [Migration("20221027104345_AddToDateBase")]
-    partial class AddToDateBase
+    [Migration("20221030073117_addCoverTypeToDb")]
+    partial class addCoverTypeToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,21 @@ namespace BulkyBook.Migrations
                     b.HasKey("id");
 
                     b.ToTable("categeries");
+                });
+
+            modelBuilder.Entity("BulkyBook.Models.CoverType", b =>
+                {
+                    b.Property<double>("id")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CoverName")
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("CoverTypes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.StaticFiles
-@model IEnumerable<Categery>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<BulkyBook.Areas.Admin.Models.Categery>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,10 +19,6 @@
 
     <div class="row pt-4">
         <h1>Index</h1>
-        @if (TempData["success"] != null)
-        {
-            <h3>@TempData["success"]</h3>
-        }
 
         <div class="col-12 text-end">
             <a asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Create New</a>

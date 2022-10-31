@@ -1,4 +1,6 @@
-using BulkyBook.Data;
+using BulkyBook.Areas.Admin.Data;
+using BulkyBook.Repository;
+using BulkyBook.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -7,10 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplecationDbContext>(options => options.UseSqlServer(
-    
     builder.Configuration.GetConnectionString("ApplecationDbContext") ?? throw new InvalidOperationException
-    ("Connection string 'WebApplication1Context' not found.")
-    ));
+        ("Connection string 'WebApplication1Context' not found.")
+));
+
+builder.Services.AddScoped<IUnitOfWork, UntiOfWork>();
 // because hot loading we don't need this
 //builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -33,6 +36,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

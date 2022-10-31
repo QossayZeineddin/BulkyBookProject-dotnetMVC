@@ -1,28 +1,29 @@
-﻿using BulkyBook.Data;
-using BulkyBook.Models;
+﻿using BulkyBook.Areas.Admin.Models;
+using BulkyBook.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulkyBook.Controllers;
-
+namespace BulkyBook.Areas.Admin.Controllers;
+[Area("Admin")]
 public class CategeryController : Controller
 {
     private static int id = 1;
-    private readonly ApplecationDbContext _db;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CategeryController(ApplecationDbContext db)
+    public CategeryController(IUnitOfWork unitOfWork)
     {
-        _db = db;
+        _unitOfWork = unitOfWork;
     }
 
     // GET
     public IActionResult Index()
     {
-        IEnumerable<Categery> categery = from VAR in _db.categeries
-            select VAR;
+        // IEnumerable<Categery> categery = from VAR in _db.getAll();
+        //     select VAR;
 
+        IEnumerable<Categery> objs = _unitOfWork.categery.getAll();
         //var categerys = _db.categeries.ToList();
-        return View(categery);
+        return View(objs);
     }
 
 
@@ -44,8 +45,8 @@ public class CategeryController : Controller
         if (ModelState.IsValid)
         {
             categery.id = id++;
-            _db.categeries.Add(categery);
-            _db.SaveChanges();
+            _unitOfWork.categery.add(categery);
+            _unitOfWork.save();
             TempData["success"] = "Categery  Created successfully!";
             return RedirectToAction(nameof(Index));
         }
@@ -60,7 +61,7 @@ public class CategeryController : Controller
             return BadRequest();
         }
 
-        var categeryInDataBase = _db.categeries.Find(id);
+        var categeryInDataBase = _unitOfWork.categery.getFirstOrDefault(u => u.id == id);
         if (categeryInDataBase is null)
         {
             return NotFound();
@@ -83,9 +84,9 @@ public class CategeryController : Controller
         {
             try
             {
-                _db.Update(categery);
+                _unitOfWork.categery.update(categery);
                 TempData["success"] = "Categery  updated successfully!";
-                _db.SaveChangesAsync();
+                _unitOfWork.save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,12 +109,12 @@ public class CategeryController : Controller
 
     public IActionResult Delete(double? id)
     {
-        if (id == null || _db.categeries == null)
+        if (id == null || _unitOfWork.categery.getAll() == null)
         {
             return NotFound();
         }
 
-        var categeries = _db.categeries.Find(id);
+        var categeries = _unitOfWork.categery.getFirstOrDefault(u => u.id == id);
         if (categeries == null)
         {
             return NotFound();
@@ -127,24 +128,24 @@ public class CategeryController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteCategery(double id)
     {
-        if (_db.categeries == null)
+        if (_unitOfWork.categery.getAll() == null)
         {
             return Problem("Entity set 'Bulky.categeries'  is null.");
         }
 
-        var users = _db.categeries.Find(id);
+        var users = _unitOfWork.categery.getFirstOrDefault(u => u.id == id);
         if (users != null)
         {
-            _db.categeries.Remove(users);
+            _unitOfWork.categery.remove(users);
             TempData["success"] = "Categery  deleted successfully!";
         }
 
-        _db.SaveChangesAsync();
+        _unitOfWork.save();
         return RedirectToAction(nameof(Index));
     }
 
     private bool categeryExists(double id)
     {
-        return (_db.categeries?.Any(e => e.id == id)).GetValueOrDefault();
+        return (_unitOfWork.categery.getAll()?.Any(e => e.id == id)).GetValueOrDefault();
     }
 }
