@@ -8,12 +8,13 @@ namespace BulkyBook.Areas.Admin.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Categery ID")]
-        public double id { get; set; }
+        public int id { get; set; }
 
         [Required]
         [Display(Name = "Categery Name")]
         [StringLength(60, MinimumLength = 3)]
         public string name { get; set; }
+
         [Range(1, 1000, ErrorMessage = "more than number!")]
         [Display(Name = "Categery Order")]
         public string displyOrder { get; set; }

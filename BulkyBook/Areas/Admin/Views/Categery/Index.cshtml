@@ -2,7 +2,7 @@
 @model IEnumerable<BulkyBook.Areas.Admin.Models.Categery>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categeries";
 }
 
 
@@ -61,7 +61,6 @@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.id"> <i class="bi bi-pencil-square"></i> Edit</a>
-
                         <a asp-action="Delete" asp-route-id="@item.id"> <i class="bi bi-person-x-fill"></i>Delete</a>
 
                     </td>

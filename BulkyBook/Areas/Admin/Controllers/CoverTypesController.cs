@@ -55,7 +55,7 @@ namespace BulkyBook.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,CoverName")] CoverType coverType)
+        public async Task<IActionResult> Create([Bind("CoverName")] CoverType coverType)
         {
             if (ModelState.IsValid)
             {

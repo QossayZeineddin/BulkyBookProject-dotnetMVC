@@ -16,9 +16,18 @@ namespace BulkyBook.Repository
             this.dbSet = _db.Set<T>();
         }
 
-        public IEnumerable<T> getAll()
+        public IEnumerable<T> getAll(string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
+            if (includeProperies != null)
+            {
+                foreach (var includeProp in includeProperies.Split(new char[] { ',' },
+                             StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
             return query.ToList();
         }
 
@@ -37,10 +46,20 @@ namespace BulkyBook.Repository
             dbSet.RemoveRange(entitiy);
         }
 
-        public T getFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T getFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
+            
             query = query.Where(filter);
+            if (includeProperies != null)
+            {
+                foreach (var includeProp in includeProperies.Split(new char[] { ',' },
+                             StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
             return query.FirstOrDefault();
         }
     }

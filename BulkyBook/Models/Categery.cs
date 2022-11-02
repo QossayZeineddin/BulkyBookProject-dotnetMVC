@@ -8,7 +8,7 @@ namespace BulkyBook.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Categery ID")]
-        public double id { get; set; }
+        public int id { get; set; }
 
         [Required]
         [Display(Name = "Categery Name")]

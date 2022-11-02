@@ -4,8 +4,7 @@ using BulkyBook.Repository.IRepository;
 
 namespace BulkyBook.Repository
 {
-
-    public class ProductRepository : Repository<Product> , IProductRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private ApplecationDbContext _db;
 
@@ -31,10 +30,9 @@ namespace BulkyBook.Repository
                 objFromDb.CoverTypeId = product.CoverTypeId;
                 if (product.ImageUrl != null)
                 {
-                    objFromDb.ImageUrl = product.ImageUrl;  
+                    objFromDb.ImageUrl = product.ImageUrl;
                 }
-            }        }
-
-       
+            }
+        }
     }
 }
