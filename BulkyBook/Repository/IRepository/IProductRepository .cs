@@ -6,4 +6,4 @@ namespace BulkyBook.Repository.IRepository
     {
         void update(Product product);
     }
-}
+}   

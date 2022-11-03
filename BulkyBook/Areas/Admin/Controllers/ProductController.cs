@@ -4,13 +4,14 @@ using BulkyBook.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 
 namespace BulkyBook.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class ProductController : Controller
 {
-   // private static int id = 1;
+    // private static int id = 1;
     private readonly IUnitOfWork _unitOfWork;
     private IWebHostEnvironment _hostEnvironment;
 
@@ -156,7 +157,7 @@ public class ProductController : Controller
 
             if (obj.product.Id == 0)
             {
-               // obj.product.Id = id++;
+                // obj.product.Id = id++;
 
                 _unitOfWork.product.add(obj.product);
             }
@@ -173,44 +174,7 @@ public class ProductController : Controller
         return View(obj);
     }
 
-
-    // public IActionResult Delete(double? id)
-    // {
-    //     if (id == null || _unitOfWork.product.getAll() == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     var products = _unitOfWork.product.getFirstOrDefault(u => u.Id == id);
-    //     if (products == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //
-    //     return View(products);
-    // }
-
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteProduct(double id)
-    {
-        if (_unitOfWork.product.getAll() == null)
-        {
-            return Problem("Entity set 'Bulky.products'  is null.");
-        }
-
-        var products = _unitOfWork.product.getFirstOrDefault(u => u.Id == id);
-        if (products != null)
-        {
-            _unitOfWork.product.remove(products);
-            TempData["success"] = "product  deleted successfully!";
-        }
-
-        _unitOfWork.save();
-        return RedirectToAction(nameof(Index));
-    }
-
+    
     private bool productExists(double id)
     {
         return (_unitOfWork.product.getAll()?.Any(e => e.Id == id)).GetValueOrDefault();
@@ -223,6 +187,31 @@ public class ProductController : Controller
     {
         var productList = _unitOfWork.product.getAll(includeProperies: "Categery,CoverType");
         return Json(new { data = productList });
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(int? id)
+    {
+        var products = _unitOfWork.product.getFirstOrDefault(u => u.Id == id);
+        if (products == null)
+        {
+            return Json(new { success = false, message = "Entity set 'Bulky.products'  is null or there is a error" });
+            //  return Problem("Entity set 'Bulky.products'  is null.");
+        }
+
+
+        var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, products.ImageUrl.TrimStart('\\'));
+        if (System.IO.File.Exists(oldImagePath))
+        {
+            System.IO.File.Delete(oldImagePath);
+        }
+
+        _unitOfWork.product.remove(products);
+        _unitOfWork.save();
+        //TempData["success"] = "product  deleted successfully!";
+
+
+        return Json(new { success = true, message = "Delete Successfull" });
     }
 
     #endregion
