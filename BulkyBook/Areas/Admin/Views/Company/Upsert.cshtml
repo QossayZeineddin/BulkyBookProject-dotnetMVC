@@ -1,0 +1,68 @@
+﻿@model Company
+@{
+    ViewData["Title"] = "";
+}
+
+
+<form method="post" asp-controller="Company" asp-action="Upsert">
+    <input asp-for="id" hidden />
+    <div class="row">
+        <div class="col-10 ">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12  pb-2">
+                    <h2 class="text-primary">@(Model.id != 0 ? "Update" : "Create") Company</h2>
+                    <hr />
+                </div>
+
+                @*<div asp-validation-summary="All"></div>*@
+                <div class="mb-3">
+                    <label asp-for="name"></label>
+                    <input asp-for="name" class="form-control" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="city"></label>
+                    <input asp-for="city" rows="3" class="form-control" />
+                    <span asp-validation-for="city" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="postalCode"></label>
+                    <input asp-for="postalCode" class="form-control" />
+                    <span asp-validation-for="postalCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="phoneNumber"></label>
+                    <input asp-for="phoneNumber" class="form-control" />
+                    <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    @if (Model.id != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+                        ViewData["Title"] = "Update Company";
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                        ViewData["Title"] = "Create Company";
+                    }
+                    <a asp-controller="Company" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.tiny.cloud/1/ccpwpn61zi496t2317r7sse81hyc4udu7dhxa13ldk8gz4do/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+    }
+}
