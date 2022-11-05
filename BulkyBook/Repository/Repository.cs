@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using BulkyBook.Areas.Admin.Data;
+using BulkyBook.Data;
 using BulkyBook.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 

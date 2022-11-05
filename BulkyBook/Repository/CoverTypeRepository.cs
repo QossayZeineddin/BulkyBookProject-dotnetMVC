@@ -1,4 +1,4 @@
-﻿using BulkyBook.Areas.Admin.Data;
+﻿using BulkyBook.Data;
 using BulkyBook.Areas.Admin.Models;
 using BulkyBook.Repository.IRepository;
 

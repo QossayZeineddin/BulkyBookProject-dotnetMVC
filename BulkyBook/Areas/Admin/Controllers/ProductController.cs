@@ -1,11 +1,7 @@
-﻿using BulkyBook.Areas.Admin.Models;
-using BulkyBook.Areas.Admin.Models.ViewModels;
+﻿using BulkyBook.Areas.Admin.Models.ViewModels;
 using BulkyBook.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
-
 namespace BulkyBook.Areas.Admin.Controllers;
 
 [Area("Admin")]
@@ -160,14 +156,17 @@ public class ProductController : Controller
                 // obj.product.Id = id++;
 
                 _unitOfWork.product.add(obj.product);
+                TempData["success"] = "Product created successfully";
+
             }
             else
             {
                 _unitOfWork.product.update(obj.product);
+                TempData["success"] = "Product update successfully";
+
             }
 
             _unitOfWork.save();
-            TempData["success"] = "Product added successfully";
             return RedirectToAction("Index");
         }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BulkyBook.Areas.Admin.Data;
+using BulkyBook.Data;
 using BulkyBook.Areas.Admin.Models;
 
 namespace BulkyBook.Areas.Admin.Controllers

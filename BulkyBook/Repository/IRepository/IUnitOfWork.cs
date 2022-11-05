@@ -5,6 +5,8 @@
         ICategeryRepository categery { get; }
         ICoverTypeRepository coverType { get; }
         IProductRepository product { get; }
+        ICompanyRepository company { get; }
+
         void save();
     }
 }

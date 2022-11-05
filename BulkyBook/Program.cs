@@ -1,7 +1,8 @@
-using BulkyBook.Areas.Admin.Data;
+using BulkyBook.Data;
 using BulkyBook.Repository;
 using BulkyBook.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,13 +14,21 @@ builder.Services.AddDbContext<ApplecationDbContext>(options => options.UseSqlSer
         ("Connection string 'WebApplication1Context' not found.")
 ));
 
+
+//options => options.SignIn.RequireConfirmedAccount = true
+builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<ApplecationDbContext>();
+
 builder.Services.AddScoped<IUnitOfWork, UntiOfWork>();
 // because hot loading we don't need this
 //builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -31,9 +40,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
