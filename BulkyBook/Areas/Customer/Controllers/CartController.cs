@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe.Checkout;
 using System.Security.Claims;
+using BulkyBook.PublicModels;
 
 namespace BulkyBook.Areas.Customer.Controllers
 {
@@ -15,8 +16,7 @@ namespace BulkyBook.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        [BindProperty]
-        public ShoppingCartVM ShoppingCartVM { get; set; }
+        [BindProperty] public ShoppingCartVM ShoppingCartVM { get; set; }
 
         public CartController(IUnitOfWork unitOfWork)
         {
@@ -34,6 +34,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                     includeProperies: "Product"),
                 orderHeader = new()
             };
+
             ShoppingCartVM.orderHeader.applecationUser =
                 _unitOfWork.applcationUser.getFirstOrDefault(u => u.Id == clim.Value);
             ViewData["userName"] = ShoppingCartVM.orderHeader.applecationUser.name;
@@ -48,13 +49,14 @@ namespace BulkyBook.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        
 
         public IActionResult Plus(int cartId)
         {
             var cartFromDb = _unitOfWork.shoppingCart.getFirstOrDefault(u => u.Id == cartId);
             _unitOfWork.shoppingCart.IncrementCount(cartFromDb, 1);
             _unitOfWork.save();
+            TempData["success"] = "Add one successfully!";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -62,17 +64,17 @@ namespace BulkyBook.Areas.Customer.Controllers
         {
             var cartFromDb = _unitOfWork.shoppingCart.getFirstOrDefault(u => u.Id == cartId);
             _unitOfWork.shoppingCart.DecrementCount(cartFromDb, 1);
+            if (cartFromDb.count == 0)
+            {
+                _unitOfWork.shoppingCart.remove(cartFromDb);
+            }
+
             _unitOfWork.save();
+            TempData["success"] = "Remove one successfully!";
+
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Remove(int cartId)
-        {
-            var cartFromDb = _unitOfWork.shoppingCart.getFirstOrDefault(u => u.Id == cartId);
-            _unitOfWork.shoppingCart.remove(cartFromDb);
-            _unitOfWork.save();
-            return RedirectToAction(nameof(Index));
-        }
 
         public IActionResult Summary()
         {
@@ -84,6 +86,11 @@ namespace BulkyBook.Areas.Customer.Controllers
                     includeProperies: "Product"),
                 orderHeader = new()
             };
+            if (ShoppingCartVM.shoppingCartsList.Count() == 0)
+            {
+                return RedirectToAction("Index");
+            }
+
             ShoppingCartVM.orderHeader.applecationUser =
                 _unitOfWork.applcationUser.getFirstOrDefault(u => u.Id == claim.Value);
 
@@ -116,8 +123,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 u => u.applecationUserId == claim.Value,
                 includeProperies: "Product");
 
-            shoppingCartVM.orderHeader.paymentStatus = SD.PaymentStatusPending;
-            shoppingCartVM.orderHeader.orderStatus = SD.StatusPending;
+
             shoppingCartVM.orderHeader.orderDate = DateTime.Now;
             shoppingCartVM.orderHeader.applecationUserId = claim.Value;
 
@@ -127,6 +133,18 @@ namespace BulkyBook.Areas.Customer.Controllers
                 cart.priceTotal = getPriceBasedOnQuantity(cart.count, cart.Product.Price, cart.Product.Price50,
                     cart.Product.Price100);
                 shoppingCartVM.orderHeader.orderTotal += (cart.priceTotal * cart.count);
+            }
+
+            ApplecationUser applecationUser = _unitOfWork.applcationUser.getFirstOrDefault(u => u.Id == claim.Value);
+            if (applecationUser.companyId == 0)
+            {
+                shoppingCartVM.orderHeader.paymentStatus = SD.PaymentStatusPending;
+                shoppingCartVM.orderHeader.orderStatus = SD.StatusPending;
+            }
+            else
+            {
+                shoppingCartVM.orderHeader.paymentStatus = SD.PaymentStatusDelayedPayment;
+                shoppingCartVM.orderHeader.orderStatus = SD.StatusApproved;
             }
 
             shoppingCartVM.orderHeader.trackingNumber = "1";
@@ -146,72 +164,78 @@ namespace BulkyBook.Areas.Customer.Controllers
                 _unitOfWork.save();
             }
 
-            var domain = "https://localhost:7143/";
-            var options = new SessionCreateOptions
+            if (applecationUser.companyId == 0)
             {
-                LineItems = new List<SessionLineItemOptions>()
-                ,
-                Mode = "payment",
-                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartVM.orderHeader.id}",
-                CancelUrl = domain + $"customer/cart/index",
-            };
-
-            foreach (var item in shoppingCartVM.shoppingCartsList)
-            {
-
-                var sessionLineItem = new SessionLineItemOptions
+                var domain = "https://localhost:7143/";
+                var options = new SessionCreateOptions
                 {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)(item.priceTotal * 100),//20.00 -> 2000
-                        Currency = "usd",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = item.Product.Title
-                        },
-
-                    },
-                    Quantity = item.count,
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                    SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={shoppingCartVM.orderHeader.id}",
+                    CancelUrl = domain + $"customer/cart/index",
                 };
-                options.LineItems.Add(sessionLineItem);
 
+                foreach (var item in shoppingCartVM.shoppingCartsList)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.priceTotal * 100), //20.00 -> 2000
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Title
+                            },
+                        },
+                        Quantity = item.count,
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                _unitOfWork.orderHeader.updateStripePayment(shoppingCartVM.orderHeader.id, session.Id,
+                    session.PaymentIntentId);
+                _unitOfWork.save();
+
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303);
+            }
+            else
+            {
+                return RedirectToAction("OrderConfirmation", "Cart", new { id = shoppingCartVM.orderHeader.id });
             }
 
-            var service = new SessionService();
-            Session session = service.Create(options);
-
-            _unitOfWork.orderHeader.updateStripePayment(shoppingCartVM.orderHeader.id, session.Id, session.PaymentIntentId);
-            _unitOfWork.save();
-            
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
-
-           /* _unitOfWork.shoppingCart.removeRange(shoppingCartVM.shoppingCartsList);
-            _unitOfWork.save();
-            return RedirectToAction("Index", "Home");*/
+            /* _unitOfWork.shoppingCart.removeRange(shoppingCartVM.shoppingCartsList);
+             _unitOfWork.save();
+             return RedirectToAction("Index", "Home");*/
         }
 
         public IActionResult OrderConfirmation(int id)
         {
             OrderHeader orderHeader = _unitOfWork.orderHeader.getFirstOrDefault(u => u.id == id);
-            var service = new SessionService();
-            Session session = service.Get(orderHeader.SessionId);
-            if(session.PaymentStatus.ToLower() == "paid")
+            if (orderHeader.paymentStatus != SD.PaymentStatusDelayedPayment)
             {
-                _unitOfWork.orderHeader.updateStatus(orderHeader.id , SD.StatusApproved ,SD.PaymentStatusApproved);
-                _unitOfWork.save();
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.orderHeader.updateStatus(orderHeader.id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.save();
+                }
             }
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.shoppingCart.getAllByUserId(u => u.applecationUserId ==
                 orderHeader.applecationUserId).ToList();
 
-           
 
             _unitOfWork.shoppingCart.removeRange(shoppingCarts);
             _unitOfWork.save();
             return View(id);
         }
-        
+
         private double getPriceBasedOnQuantity(double qountity, double price, double price50, double price100)
         {
             if (qountity <= 50)
@@ -231,7 +255,29 @@ namespace BulkyBook.Areas.Customer.Controllers
                 return 0;
             }
         }
-        
+
+
+        #region API CALLS
+
+        [HttpDelete]
+        public IActionResult Remove(int cartId)
+        {
+            var cartFromDb = _unitOfWork.shoppingCart.getFirstOrDefault(u => u.Id == cartId);
+            if (cartFromDb != null)
+            {
+                _unitOfWork.shoppingCart.remove(cartFromDb);
+                _unitOfWork.save();
+                TempData["success"] = "Product Deleted successfully!";
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            return Json(new { success = true, message = "Delete Successfull" });
+            //return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
     }
-    
 }

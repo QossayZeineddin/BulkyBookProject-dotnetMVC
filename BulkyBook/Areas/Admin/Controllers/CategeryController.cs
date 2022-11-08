@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook.Areas.Admin.Controllers;
+
 [Area("Admin")]
 public class CategeryController : Controller
 {
-   // private static int id = 1;
+    // private static int id = 1;
     private readonly IUnitOfWork _unitOfWork;
 
     public CategeryController(IUnitOfWork unitOfWork)
@@ -44,10 +45,10 @@ public class CategeryController : Controller
         // }
         if (ModelState.IsValid)
         {
-           // categery.id = id++;
+            // categery.id = id++;
             _unitOfWork.categery.add(categery);
             _unitOfWork.save();
-            TempData["success"] = "Categery  Created successfully!";
+            TempData["success"] = "Categery Created successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -149,3 +150,4 @@ public class CategeryController : Controller
         return (_unitOfWork.categery.getAll()?.Any(e => e.id == id)).GetValueOrDefault();
     }
 }
+
