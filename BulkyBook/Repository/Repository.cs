@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using BulkyBook.Data;
 using BulkyBook.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BulkyBook.Repository
 {
@@ -19,6 +19,22 @@ namespace BulkyBook.Repository
         public IEnumerable<T> getAll(string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
+            if (includeProperies != null)
+            {
+                foreach (var includeProp in includeProperies.Split(new char[] { ',' },
+                             StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return query.ToList();
+        }
+        public IEnumerable<T> getAllByUserId(Expression<Func<T, bool>> filter, string? includeProperies = null)
+        {
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
+
             if (includeProperies != null)
             {
                 foreach (var includeProp in includeProperies.Split(new char[] { ',' },
@@ -49,7 +65,7 @@ namespace BulkyBook.Repository
         public T getFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
-            
+
             query = query.Where(filter);
             if (includeProperies != null)
             {

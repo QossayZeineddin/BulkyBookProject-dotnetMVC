@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.Migrations
 {
     [DbContext(typeof(ApplecationDbContext))]
-    [Migration("20221104194754_addCompanyToDb")]
-    partial class addCompanyToDb
+    [Migration("20221106070523_AddAll")]
+    partial class AddAll
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -151,6 +151,33 @@ namespace BulkyBook.Migrations
                     b.HasIndex("CoverTypeId");
 
                     b.ToTable("products");
+                });
+
+            modelBuilder.Entity("BulkyBook.Areas.Customer.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("applecationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("applecationUserId");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("shoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -304,12 +331,10 @@ namespace BulkyBook.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -346,12 +371,10 @@ namespace BulkyBook.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -369,6 +392,10 @@ namespace BulkyBook.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("companyId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -378,6 +405,8 @@ namespace BulkyBook.Migrations
 
                     b.Property<string>("streetAddress")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("companyId");
 
                     b.HasDiscriminator().HasValue("ApplecationUser");
                 });
@@ -399,6 +428,25 @@ namespace BulkyBook.Migrations
                     b.Navigation("Categery");
 
                     b.Navigation("CoverType");
+                });
+
+            modelBuilder.Entity("BulkyBook.Areas.Customer.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("BulkyBook.PublicModels.ApplecationUser", "applecationUsers")
+                        .WithMany()
+                        .HasForeignKey("applecationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BulkyBook.Areas.Admin.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("applecationUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -450,6 +498,17 @@ namespace BulkyBook.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BulkyBook.PublicModels.ApplecationUser", b =>
+                {
+                    b.HasOne("BulkyBook.Areas.Admin.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("companyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

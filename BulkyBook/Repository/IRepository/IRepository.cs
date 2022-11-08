@@ -5,7 +5,9 @@ namespace BulkyBook.Repository.IRepository
 
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> getAll( string? includeProperies = null);
+        IEnumerable<T> getAll(string? includeProperies = null);
+        IEnumerable<T> getAllByUserId(Expression<Func<T, bool>> filter, string? includeProperies = null);
+
 
         void add(T entitiy);
 
@@ -14,6 +16,6 @@ namespace BulkyBook.Repository.IRepository
         void removeRange(IEnumerable<T> entitiy);
 
 
-        T getFirstOrDefault(Expression<Func<T, bool>> filter , string? includeProperies = null);
+        T getFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperies = null);
     }
 }
