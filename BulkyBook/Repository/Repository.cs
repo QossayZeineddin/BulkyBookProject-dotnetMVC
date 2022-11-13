@@ -30,6 +30,7 @@ namespace BulkyBook.Repository
 
             return query.ToList();
         }
+
         public IEnumerable<T> getAllByUserId(Expression<Func<T, bool>> filter, string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
@@ -62,11 +63,21 @@ namespace BulkyBook.Repository
             dbSet.RemoveRange(entitiy);
         }
 
-        public T getFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperies = null)
+        public T getFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperies = null,
+            bool tracked = true)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+            if (tracked == true)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
 
             query = query.Where(filter);
+            
             if (includeProperies != null)
             {
                 foreach (var includeProp in includeProperies.Split(new char[] { ',' },

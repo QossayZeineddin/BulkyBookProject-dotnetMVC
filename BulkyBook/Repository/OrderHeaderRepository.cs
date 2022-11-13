@@ -38,6 +38,7 @@ namespace BulkyBook.Repository
             var orderFromDb = _db.orderHeaders.FirstOrDefault(u => u.id == id);
             if (orderFromDb != null)
             {
+                orderFromDb.paymentDate = DateTime.Now;
                 orderFromDb.SessionId = seeitonId;
                 orderFromDb.PaymentIntentId = paymentItenedId;
                 

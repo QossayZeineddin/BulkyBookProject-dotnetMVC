@@ -27,7 +27,7 @@ namespace BulkyBook.Migrations
                     orderTotal = table.Column<double>(type: "float", nullable: false),
                     orderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     paymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    trackingNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    trackingNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     carrier = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     paymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     paymentDueDate = table.Column<DateTime>(type: "datetime2", nullable: false),

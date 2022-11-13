@@ -136,7 +136,7 @@ namespace BulkyBook.Areas.Customer.Controllers
             }
 
             ApplecationUser applecationUser = _unitOfWork.applcationUser.getFirstOrDefault(u => u.Id == claim.Value);
-            if (applecationUser.companyId == 0)
+            if (applecationUser.companyId != 1)
             {
                 shoppingCartVM.orderHeader.paymentStatus = SD.PaymentStatusPending;
                 shoppingCartVM.orderHeader.orderStatus = SD.StatusPending;
@@ -164,7 +164,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 _unitOfWork.save();
             }
 
-            if (applecationUser.companyId == 0)
+            if (applecationUser.companyId != 1)
             {
                 var domain = "https://localhost:7143/";
                 var options = new SessionCreateOptions
