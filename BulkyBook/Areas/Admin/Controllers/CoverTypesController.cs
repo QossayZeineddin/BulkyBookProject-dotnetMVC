@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BulkyBook.Data;
 using BulkyBook.Areas.Admin.Models;
+using BulkyBook.Uitility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BulkyBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CoverTypesController : Controller
     {
         private readonly ApplecationDbContext _context;

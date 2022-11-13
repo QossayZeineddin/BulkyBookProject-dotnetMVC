@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BulkyBook.Uitility;
-using Microsoft.CodeAnalysis.Options;
 using Stripe;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,12 +26,11 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUnitOfWork, UntiOfWork>();
 builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
 // because hot loading we don't need this
-//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.ConfigureApplicationCookie(Option => {
     Option.LoginPath = $"/Identity/Account/Login";
     Option.LogoutPath = $"/Identity/Account/Logout";
-    Option.AccessDeniedPath = $"/Identity/Account/AccessDeied";
-});
+    Option.AccessDeniedPath = $"/Identity/Account/AccessDenied";});
 
 var app = builder.Build();
 

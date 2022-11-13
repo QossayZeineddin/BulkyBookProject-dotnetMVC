@@ -1,11 +1,14 @@
 ﻿using BulkyBook.Areas.Admin.Models;
 using BulkyBook.Repository.IRepository;
+using BulkyBook.Uitility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = SD.Role_Admin)]
 public class CategeryController : Controller
 {
     // private static int id = 1;

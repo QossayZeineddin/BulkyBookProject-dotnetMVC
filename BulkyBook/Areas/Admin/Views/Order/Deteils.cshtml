@@ -252,7 +252,11 @@ ViewData["Title"] = "Orders Deteils";
                       </div>
                     </li>
                   </ul>
-
+                    @if (Model.orderHeader.paymentStatus == SD.PaymentStatusDelayedPayment &&
+                      Model.orderHeader.orderStatus == SD.StatusShipped)
+                    {
+                      <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
+                    }
                   @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                   {
                     if (Model.orderHeader.orderStatus == SD.StatusApproved)
@@ -263,11 +267,7 @@ ViewData["Title"] = "Orders Deteils";
                     {
                       <input asp-action="shipOrder" type="submit" onclick="return ValidateInpute()" class="btn btn-primary form-control my-1" value="Ship Order" />
                     }
-                    if (Model.orderHeader.paymentStatus == SD.PaymentStatusDelayedPayment &&
-                      Model.orderHeader.orderStatus == SD.StatusShipped)
-                    {
-                      <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
-                    }
+                    
                     if (Model.orderHeader.orderStatus != SD.StatusRefunded &&
                       Model.orderHeader.orderStatus != SD.StatusCancelled &&
                       Model.orderHeader.orderStatus != SD.StatusShipped)
