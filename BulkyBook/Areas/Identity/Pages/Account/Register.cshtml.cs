@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System;
@@ -45,7 +46,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork
-            )
+        )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -96,7 +97,8 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -110,26 +112,22 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [StringLength(100)]
-            public string name { get; set; }
+            [Required] [StringLength(100)] public string name { get; set; }
 
-            [Required]
-            public string city { get; set; }
+            [Required] public string city { get; set; }
 
-            [Required]
-            public String phoneNumber { get; set; }
+            [Required] public String phoneNumber { get; set; }
 
             public string? postalCode { get; set; }
+            public string? State { get; set; }
 
             public string? Role { get; set; }
 
-            public int? companyId { get; set; }
-            [ValidateNever]
-            public IEnumerable<SelectListItem> RoleList { get; set; }
 
-            [ValidateNever]
-            public IEnumerable<SelectListItem> CopmanyList { get; set; }
+            public int? companyId { get; set; }
+            [ValidateNever] public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            [ValidateNever] public IEnumerable<SelectListItem> CopmanyList { get; set; }
         }
 
 
@@ -174,7 +172,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.phoneNumber;
                 user.city = Input.city;
                 user.postalCode = Input.postalCode;
-                if(Input.Role == SD.Role_User_cop)
+                if (Input.Role == SD.Role_User_cop)
                 {
                     user.companyId = Input.companyId;
                 }
@@ -184,18 +182,18 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if(Input.Role == null)
+                    if (Input.Role == null)
                     {
-                        await _userManager.AddToRoleAsync(user,SD.Role_User_Indi);
+                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
                     }
                     else
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    
-                   
+
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -209,7 +207,8 @@ namespace BulkyBook.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation",
+                            new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -217,6 +216,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -236,8 +236,8 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             catch
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplecationUser)}'. " +
-                    $"Ensure that '{nameof(ApplecationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                                                    $"Ensure that '{nameof(ApplecationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                                                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
@@ -247,6 +247,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
+
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
     }

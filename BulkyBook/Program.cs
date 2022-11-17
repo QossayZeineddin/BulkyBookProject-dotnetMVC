@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BulkyBook.Uitility;
+using Microsoft.CodeAnalysis.Options;
 using Stripe;
 
 
@@ -19,7 +20,7 @@ builder.Services.AddDbContext<ApplecationDbContext>(options => options.UseSqlSer
 
 
 //options => options.SignIn.RequireConfirmedAccount = true
-builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplecationDbContext>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
@@ -27,10 +28,25 @@ builder.Services.AddScoped<IUnitOfWork, UntiOfWork>();
 builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
 // because hot loading we don't need this
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.ConfigureApplicationCookie(Option => {
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = "3322507987967921";
+    options.AppSecret = "1ab99e79a8944aeeaa69fde538553abc";
+});
+builder.Services.ConfigureApplicationCookie(Option =>
+{
     Option.LoginPath = $"/Identity/Account/Login";
     Option.LogoutPath = $"/Identity/Account/Logout";
-    Option.AccessDeniedPath = $"/Identity/Account/AccessDenied";});
+    Option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(60);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -50,8 +66,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:Secretkey").Get<String>();
-app.UseAuthentication();
 
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllerRoute(

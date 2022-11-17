@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using BulkyBook.Areas.Admin.Models;
 using System.Collections.Generic;
+using BulkyBook.Uitility;
 
 namespace BulkyBook.Areas.Customer.Controllers
 {
@@ -41,7 +42,6 @@ namespace BulkyBook.Areas.Customer.Controllers
 
         public IActionResult Details(int prodectId)
         {
-
             ShoppingCart shoppingCart = new()
             {
                 count = 1,
@@ -52,6 +52,7 @@ namespace BulkyBook.Areas.Customer.Controllers
 
             return View(shoppingCart);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -65,17 +66,19 @@ namespace BulkyBook.Areas.Customer.Controllers
             if (cartFromDb == null)
             {
                 _unitOfWork.shoppingCart.add(shoppingCart);
+                _unitOfWork.save();
+
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                    _unitOfWork.shoppingCart.getAllByUserId(u => u.applecationUserId == clim.Value).ToList().Count);
             }
             else
             {
                 _unitOfWork.shoppingCart.IncrementCount(cartFromDb, shoppingCart.count);
-
+                _unitOfWork.save();
             }
-            _unitOfWork.save();
+
 
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

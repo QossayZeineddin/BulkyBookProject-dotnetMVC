@@ -70,6 +70,10 @@ namespace BulkyBook.Areas.Customer.Controllers
             if (cartFromDb.count == 0)
             {
                 _unitOfWork.shoppingCart.remove(cartFromDb);
+                _unitOfWork.save();
+                HttpContext.Session.SetInt32(SD.SessionCart, 
+                    _unitOfWork.shoppingCart.getAllByUserId(u => u.applecationUserId == cartFromDb.applecationUserId)
+                        .ToList().Count);
             }
 
             _unitOfWork.save();
@@ -273,6 +277,9 @@ namespace BulkyBook.Areas.Customer.Controllers
             {
                 _unitOfWork.shoppingCart.remove(cartFromDb);
                 _unitOfWork.save();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                    _unitOfWork.shoppingCart.getAllByUserId(u => u.applecationUserId == cartFromDb.applecationUserId)
+                        .ToList().Count);
                 TempData["success"] = "Product Deleted successfully!";
             }
             else
