@@ -40,3 +40,27 @@ The Company user can add a books that his company selles ,
 this user controll his book just (edit delete), but admin can do it in all products
 
 ![Screenshot (9)](https://user-images.githubusercontent.com/103140839/202903220-1013f1e3-3f77-47aa-ab70-c0104f883db9.png)
+
+All users in the system can add proudect to thier Cart 
+
+![Screenshot (22)](https://user-images.githubusercontent.com/103140839/202904325-b8f864a4-24bc-4feb-9f7b-d465ee0cac0a.png)
+
+and view the cart items
+
+![Screenshot (23)](https://user-images.githubusercontent.com/103140839/202904347-9960db79-0309-43c6-b6be-fa4b4b8b188c.png)
+
+
+When click in summary button the system ask the user again about delivery informations before confirm the order
+
+![Screenshot (25)](https://user-images.githubusercontent.com/103140839/202904462-82c91d04-4134-4601-b01d-98ff334abdf0.png)
+
+When click in place order the system intgrate with a online payment as below
+
+![Screenshot (26)](https://user-images.githubusercontent.com/103140839/202904606-b700d165-6611-4493-84a6-923bca0346d4.png)
+
+after paying
+
+![Screenshot 2022-11-20 132644](https://user-images.githubusercontent.com/103140839/202904695-ea44e229-75c4-4694-ae04-160e041bd13e.png)
+
+
+
