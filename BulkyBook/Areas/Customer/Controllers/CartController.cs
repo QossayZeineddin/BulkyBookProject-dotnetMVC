@@ -81,7 +81,7 @@ namespace BulkyBook.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+  
 
         public IActionResult Summary()
         {

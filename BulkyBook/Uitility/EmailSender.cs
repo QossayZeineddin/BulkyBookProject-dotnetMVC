@@ -29,5 +29,5 @@ namespace BulkyBook.Uitility
 
             return Task.CompletedTask;
         }
-    }
+    } 
 }

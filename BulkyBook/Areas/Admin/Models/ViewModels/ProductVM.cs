@@ -10,5 +10,5 @@ namespace BulkyBook.Areas.Admin.Models.ViewModels
         public IEnumerable<SelectListItem> categoryList { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> coverTypeList { get; set; }
-    }
+    } 
 }

@@ -12,7 +12,7 @@ window.addEventListener("load", (function () {
         }))
     }
 }));
-
+ 
 function initTheme() {
     var darkThemeSelected = localStorage.getItem("darkSwitch") !== null && localStorage.getItem("darkSwitch") === "dark";
     darkSwitch.checked = darkThemeSelected;

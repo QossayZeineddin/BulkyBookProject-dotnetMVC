@@ -21,7 +21,7 @@ $(document).ready(function () {
     }
 });
 
-
+ 
 function loadDataTable(status) {
     dataTable = $('#myTable').DataTable({
         "ajax": {

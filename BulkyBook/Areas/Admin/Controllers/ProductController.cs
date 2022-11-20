@@ -20,7 +20,7 @@ public class ProductController : Controller
         _unitOfWork = unitOfWork;
         _hostEnvironment = hostEnvironment;
     }
-
+ 
     // GET
     public IActionResult Index()
     {

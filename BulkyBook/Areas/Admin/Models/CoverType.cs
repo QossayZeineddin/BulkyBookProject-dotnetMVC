@@ -13,4 +13,4 @@ public class CoverType
     [Display(Name = "Name Of Cover Type")]
     [MaxLength(55)]
     public string CoverName { get; set; }
-}
+} 

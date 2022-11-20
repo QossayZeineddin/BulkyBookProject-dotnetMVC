@@ -22,7 +22,7 @@ namespace BulkyBook.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+ 
         // GET: Admin/CoverTypes
         public async Task<IActionResult> Index()
         {

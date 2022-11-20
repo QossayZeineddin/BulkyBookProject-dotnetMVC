@@ -38,5 +38,5 @@ namespace BulkyBook.ViewComponents
              return View(0);
             }
         }
-    }
+    } 
 }

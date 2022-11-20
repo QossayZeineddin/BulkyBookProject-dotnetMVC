@@ -7,4 +7,4 @@ namespace BulkyBook.Areas.Admin.Models.ViewModels
         public OrderHeader orderHeader { get; set; }
         public IEnumerable<OrderDetail> orderDetails { get; set; }
     }
-}
+} 

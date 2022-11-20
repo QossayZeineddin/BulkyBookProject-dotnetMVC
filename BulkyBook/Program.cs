@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using BulkyBook.Uitility;
 using Microsoft.CodeAnalysis.Options;
 using Stripe;
-
+ 
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -22,3 +22,4 @@ namespace BulkyBook.Areas.Admin.Models
         public string? postalCode { get; set; }
     }
 }
+ 

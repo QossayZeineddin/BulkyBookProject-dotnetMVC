@@ -145,7 +145,7 @@ namespace BulkyBook.Areas.Admin.Controllers
                 _unitOfWork.orderHeader.update(orderHeaderFromDb);
                 _unitOfWork.save();
                 TempData["success"] = "Order Details update successfully!.";
-                return RedirectToAction("Deteils", "Order", new { OrderId = orderHeaderFromDb.id });
+                return RedirectToAction("Deteils", "Order", new { OrderId = orderHeaderFromDb.id }); 
             }
             else
             {

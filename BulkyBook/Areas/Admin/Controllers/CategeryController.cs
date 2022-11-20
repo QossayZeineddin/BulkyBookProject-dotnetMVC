@@ -18,7 +18,7 @@ public class CategeryController : Controller
     {
         _unitOfWork = unitOfWork;
     }
-
+ 
     // GET
     public IActionResult Index()
     {

@@ -67,7 +67,7 @@ namespace BulkyBook.Areas.Customer.Controllers
             {
                 _unitOfWork.shoppingCart.add(shoppingCart);
                 _unitOfWork.save();
-
+ 
                 HttpContext.Session.SetInt32(SD.SessionCart,
                     _unitOfWork.shoppingCart.getAllByUserId(u => u.applecationUserId == clim.Value).ToList().Count);
             }
@@ -81,4 +81,4 @@ namespace BulkyBook.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
-}
+} 

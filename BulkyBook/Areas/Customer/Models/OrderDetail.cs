@@ -10,7 +10,7 @@ namespace BulkyBook.Areas.Customer.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        
+         
         [Required]
         public int orderId { get; set; }
         [ForeignKey("orderId")]

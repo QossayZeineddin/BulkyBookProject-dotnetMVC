@@ -4,7 +4,7 @@ using BulkyBook.PublicModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulkyBook.Data
+namespace BulkyBook.Data 
 {
     public class ApplecationDbContext : IdentityDbContext
     {

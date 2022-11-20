@@ -6,4 +6,4 @@ namespace BulkyBook.Areas.Customer.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
-}
+} 

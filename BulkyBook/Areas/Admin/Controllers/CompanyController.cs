@@ -19,7 +19,7 @@ namespace BulkyBook.Areas.Admin.Controllers
         {
             return View();
         }
-
+ 
 
         public IActionResult Upsert(double? id)
         {

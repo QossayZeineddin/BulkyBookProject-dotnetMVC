@@ -13,7 +13,7 @@ resetTheme();
 });
 }
 });
-
+ 
 /**
 * Summary: function that adds or removes the attribute 'data-theme' depending if
 * the switch is 'on' or 'off'.

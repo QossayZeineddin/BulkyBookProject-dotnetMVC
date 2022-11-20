@@ -65,4 +65,4 @@ public class Product
     [ForeignKey("CoverTypeId")]
     [Display(Name = "Cover Type")]
     public CoverType CoverType { get; set; }
-}
+} 

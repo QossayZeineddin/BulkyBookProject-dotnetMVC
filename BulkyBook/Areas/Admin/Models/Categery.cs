@@ -23,4 +23,4 @@ namespace BulkyBook.Areas.Admin.Models
         [Display(Name = "Categery Created Time")]
         public DateTime createdDateTime { get; set; } = DateTime.Now;
     }
-}
+} 
