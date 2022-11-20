@@ -2,7 +2,6 @@
 using BulkyBook.Repository.IRepository;
 using BulkyBook.Uitility;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 
 namespace BulkyBook.ViewComponents

@@ -1,7 +1,7 @@
-﻿@{
+﻿@using BulkyBook.Uitility
+@{
     ViewData["Title"] = "Products";
 }
-
 
 
 <div class="container p-3">
@@ -9,13 +9,16 @@
         <div class="col-6">
             <h2 class="text-primary">Product List</h2>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> &nbsp; Create New Product
-            </a>
-        </div>
+        @if (User.IsInRole(SD.Role_User_cop))
+        {
+            <div class="col-6 text-end">
+                <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> &nbsp; Create New Product
+                </a>
+            </div>
+        }
     </div>
-    <br /><br />
+    <br/><br/>
 
     <table id="myTable" class="table table-bordered table-striped" style="width:100%">
         <thead>

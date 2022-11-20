@@ -4,10 +4,11 @@ using BulkyBook.Uitility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace BulkyBook.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize(Roles = SD.Role_Admin)]
+[Authorize(Roles = SD.Role_User_cop + "," + SD.Role_Admin)]
 public class ProductController : Controller
 {
     // private static int id = 1;
@@ -160,13 +161,11 @@ public class ProductController : Controller
 
                 _unitOfWork.product.add(obj.product);
                 TempData["success"] = "Product created successfully";
-
             }
             else
             {
                 _unitOfWork.product.update(obj.product);
                 TempData["success"] = "Product update successfully";
-
             }
 
             _unitOfWork.save();
@@ -176,7 +175,7 @@ public class ProductController : Controller
         return View(obj);
     }
 
-    
+
     private bool productExists(double id)
     {
         return (_unitOfWork.product.getAll()?.Any(e => e.Id == id)).GetValueOrDefault();

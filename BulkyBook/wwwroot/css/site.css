@@ -18,5 +18,20 @@ body {
 }
 
 .foters{
-  min-height: 510px;
+  min-height: 680px;
+}
+.bd-navbar {
+  min-height: 4rem;
+  background-color: #5d477e;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.05),inset 0 -1px 0 rgba(0,0,0,.1);
+}
+
+.bd-navbar2 {
+  min-height: 4rem;
+  background-color: #6f6185;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.05),inset 0 -1px 0 rgba(0,0,0,.1);
+}
+
+.img-xy{
+  height: 400px;
 }
