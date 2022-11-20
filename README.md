@@ -24,7 +24,14 @@ The Cover Type work the same
 
 ![Screenshot (19)](https://user-images.githubusercontent.com/103140839/202903656-795b28f2-9c74-43c5-bc3b-d996a7dbb81f.png)
 
+Admin can create , edit , delete Companies in the system 
 
+
+![Screenshot (20)](https://user-images.githubusercontent.com/103140839/202903978-bf918175-93c1-4f2a-ac8d-28c4de24a6ab.png)
+ 
+ (JQuery Alert for deleteing any thenks in the web site )
+ 
+ ![Screenshot 2022-11-20 131415](https://user-images.githubusercontent.com/103140839/202904030-20e9d662-e881-46d8-b54b-e10bced90c6b.png)
 
 The Company user can add a books that his company selles , 
 
