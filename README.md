@@ -1,5 +1,11 @@
 # BulkyBookProject-dotnetMVC
-this is the secreen for all web site vistor 
+the system have to way of sing in either your information that entered in registion or by Facebook
+
+![Screenshot 2022-11-20 132804](https://user-images.githubusercontent.com/103140839/202904844-0d9b91cf-2dcb-4407-9a42-ae8fe56eb969.png)
+![Screenshot 2022-11-20 132821](https://user-images.githubusercontent.com/103140839/202904850-be0cdb24-b5b8-41d5-8a4d-be7518ed7e92.png)
+
+
+This is the secreen for all web site vistor 
 
 ![Screenshot (10)](https://user-images.githubusercontent.com/103140839/202903313-db10b3e0-c0b3-419a-815a-cf37aa2440d9.png)
 
