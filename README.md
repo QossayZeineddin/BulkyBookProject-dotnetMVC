@@ -75,5 +75,10 @@ In order Manger the admin and employee user can start prossing with order like a
 
  and when the order is shopped then admin cannot deite anythenks or cancel the order
  
-![Screenshot (30)](https://user-images.githubusercontent.com/103140839/203246960-f9b494f2-a4ae-44c0-bbd1-c6d9c843832b.png)
+
+![Screenshot (300)](https://user-images.githubusercontent.com/103140839/203247256-825c8768-edf7-4560-9c35-6458f2428de3.png)
+
+
+
+
 
