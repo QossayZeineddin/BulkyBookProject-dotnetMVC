@@ -69,4 +69,11 @@ after paying
 ![Screenshot 2022-11-20 132644](https://user-images.githubusercontent.com/103140839/202904695-ea44e229-75c4-4694-ae04-160e041bd13e.png)
 
 
+In order Manger the admin and employee user can start prossing with order like add tracking number and the delivery info and update info of order for delivery
+
+![Screenshot (29)](https://user-images.githubusercontent.com/103140839/203246675-69edfc11-b805-4352-9c5b-723346a4fad3.png)
+
+ and when the order is shopped then admin cannot deite anythenks or cancel the order
+ 
+![Screenshot (30)](https://user-images.githubusercontent.com/103140839/203246960-f9b494f2-a4ae-44c0-bbd1-c6d9c843832b.png)
 
